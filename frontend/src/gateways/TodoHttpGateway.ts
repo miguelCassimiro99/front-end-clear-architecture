@@ -1,3 +1,4 @@
+import TodoList from '../entities/TodoList';
 import HttpClient from '../infra/HttpClient';
 import ITodoGateway from './TodoGateway';
 
@@ -6,7 +7,9 @@ export default class TodoHttpGateway implements ITodoGateway {
   constructor (readonly httpClient: HttpClient, readonly baseUrl:string) {}
 
   async getTodos(): Promise<any> {
-    return await this.httpClient.get(`${this.baseUrl}/todos`)
+    const todosData =  await this.httpClient.get(`${this.baseUrl}/todos`)
+    const todoList = new TodoList(todosData); // to restore the data to the domain object
+    return todoList;
   }
 
   async addItem(item: any): Promise<any> {
@@ -16,7 +19,7 @@ export default class TodoHttpGateway implements ITodoGateway {
     await this.httpClient.put(`${this.baseUrl}/todos`, item)
   }
   async removeItem(id: string): Promise<any> {
-    await this.httpClient.delete(`${this.baseUrl}/${id}`)
+    await this.httpClient.delete(`${this.baseUrl}/todos/${id}`)
   }
   
 }

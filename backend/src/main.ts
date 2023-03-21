@@ -13,7 +13,6 @@ const todos = [
 
 //? Routes
 app.get("/todos", function (req, res) {
-	console.log("GET /todos");
 	res.json(todos);
 });
 app.post("/todos", function (req, res) {
@@ -22,6 +21,7 @@ app.post("/todos", function (req, res) {
 });
 
 app.delete("/todos/:id", function (req, res) {
+	console.log("ID to delete: ", req.params.id);
 	const todo = todos.find((todo: any) => todo.id === req.params.id);
 	if (todo) {
 		todos.splice(todos.indexOf(todo), 1);
@@ -29,10 +29,11 @@ app.delete("/todos/:id", function (req, res) {
 	res.end();
 });
 
-app.put("/todos/:id", function (req, res) {
-	const todo = todos.find((todo: any) => todo.id === req.params.id);
-	if (todo) {
-		todo.done = req.body.done;
+app.put("/todos/", function (req, res) {
+	const item = req.body
+	const todo = todos.find((todo: any) => todo.id === item.id);
+	if (todo) { 
+		todo.done = item.done;
 	}
 	res.end();
 });
