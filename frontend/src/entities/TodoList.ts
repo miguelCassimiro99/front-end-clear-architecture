@@ -1,7 +1,8 @@
+import Item from "./Item";
 import Observable from "./Observable";
 
 export default class TodoList extends Observable {
-  items: any;
+  items: Item[];
 
   constructor (items?: any) {
     super();
@@ -9,7 +10,7 @@ export default class TodoList extends Observable {
 
     if (items) {
       for (const item of items) {
-        this.items.push({ id: item.id, description: item.description, done: item.done })
+        this.items.push(new Item(item.id, item.description, item.done))
       }
     }
   }
@@ -18,7 +19,7 @@ export default class TodoList extends Observable {
     if(!itemDescription) return;
     if(this.items.filter((item: any) => !item.done).length > 4) return;
     if(itemDescription === " ") return;
-    const item = { id: Math.random().toString(36).slice(2, 7), description: itemDescription, done: false }
+    const item = new Item(null, itemDescription)
 
     this.items.push(item);
     this.notify("addItem", item);

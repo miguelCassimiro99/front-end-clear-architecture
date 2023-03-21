@@ -3,6 +3,7 @@ import { inject, onMounted, reactive, ref } from 'vue';
 import TodoList from '../entities/TodoList';
 import TodoGateway from '../gateways/TodoGateway';
 import Observer from '../entities/Observer';
+import TodoListComponent from './TodoListComponent.vue';
 
 const data: any = reactive({ todoList: new TodoList() })
 const description = ref("")
@@ -33,21 +34,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section>
-    <div v-if="data.todoList.items.length === 0">
-      No Items
-    </div>
-    <div v-else>
-      <span class="completed">{{ data.todoList.getCompleted() }}%</span>
-      <div v-for="item in data.todoList.items">
-        <span :style="{ 'text-decoration': (item.done) ? 'line-through' : '' }">{{ item.id }} {{ item.description }}</span>
-        <button @click="data.todoList.toggleDone(item)">Done/Undone</button>
-        <button @click="data.todoList.removeItem(item)">Remove</button>
-      </div>
-      <hr />
-    </div>
-    <input type="text" v-model="description" @keyup.enter="data.todoList.addItem(description)" />
-  </section>
+  <TodoListComponent :todo-list="data.todoList"  />
 
 </template>
 
